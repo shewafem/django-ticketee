@@ -1,0 +1,51 @@
+{% extends 'main/layout.html' %}
+{% load i18n %}
+{% load events_tags %}
+{% load static %}
+{% block main %}
+<main class="page">
+    <div class="page__container _container">
+        <section id="events" class="page__events">
+            <h2 class="page__events-heading">{% trans 'События'%}</h2>
+            {% get_cats as cats %}
+            <div class="events__btns">
+                <a class="create__button button" href="{% url 'create-event' %}">{% trans 'Создать событие'%}</a>
+                <a class="create__button button button--excel" href="{% url 'excel' %}">{% trans 'Excel'%}</a>
+                <div class="categories">
+                    <select title="categories" class="categories__select" id="">
+                        {% if cat_selected == "" %}
+                            <option>{% trans 'Все категории'%}</option>
+                        {% else %}
+                            <option value="{% url 'events' %}">{% trans 'Все категории'%}</option>
+                        {% endif %}
+                        {% show_cats %}
+                    </select>
+                </div>
+            </div>
+            {% show_events %}
+        </section>
+    </div>
+</main>
+<style>
+    .events__btns {
+        display: flex;
+        justify-content: space-between;
+        gap:10px;
+    }
+    .create__button {
+        font-family: inherit;
+        font-size: 24px;
+        border-radius: 10px;
+        border: 2px solid #000000;
+        box-shadow: 5px 5px 0px #000000;
+        text-align: center;
+        font-weight: 500;
+        background: white;
+        margin-bottom: 20px;
+        padding: 13px 15px;
+    }
+    .button--excel:hover {
+        background:#107c41;
+    }
+</style>
+{%endblock%}

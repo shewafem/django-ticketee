@@ -1,0 +1,106 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <link href="{% static 'css/dropdown.css' %}" rel="stylesheet">
+    <link rel="shortcut icon" href="{% static 'img/icons/favicon.ico' %}" type="image/x-icon">
+    <script src="{% static 'js/device.js' %}"></script>
+    <title>{{ title }}</title>
+</head>
+
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <div class="header__container _container">
+                <a href="{% url 'home' %}"><img class="header__logo" src="{% static 'img/logo.svg' %}" alt="logo"></a>
+                <nav class="header__nav nav">
+                    <ul class="nav__list">
+                        {% comment %}<li class="nav__item"><a href="tel:+79503858079" class="nav__link"><img width="25px" class="menu__icon" src="{% static 'tickets/img/icons/phone.svg' %}" alt="phone">(505) 503-4455</a></li>{% endcomment %}
+                        <li class="nav__item"><a href="{% url 'events' %}" class="nav__link">{% trans 'События' %}</a></li>
+                        <li class="nav__item"><a href="{% url 'about' %}" class="nav__link">{% trans 'О нас' %}</a></li>
+                        <li class="nav__item"><a href="{% url 'my-events' %}" class="nav__link">{% trans 'Мои билеты' %} 🏷️</a></li>
+                        <li class="nav__item lang-menu">
+                            {% get_current_language as LANGUAGE_CODE %}
+                            <div class="selected-lang ru">
+                                {% if LANGUAGE_CODE == 'ru' %}
+                                <div class="lang ru">{{LANGUAGE_CODE|language_name_local}}</div>
+                                {%else%}
+                                <div class="lang en">{{LANGUAGE_CODE|language_name_local}}</div>
+                                {%endif%}
+                            </div>
+                            {% get_current_language as LANGUAGE_CODE %}
+                            {% get_available_languages as LANGUAGES %}
+                            {% get_language_info_list for LANGUAGES as languages %}
+                            <ul>
+                                {% for language in languages %}
+                                    <li>
+                                        {%if language.code == 'ru'%}
+                                        <a href="/" class="ru">{{ language.name_local }}</a>
+                                        {%else%}
+                                        <a href="/{{language.code}}/" class="en">{{ language.name_local }}</a>
+                                        {%endif%}
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="nav__item"><a href="{% url 'logout' %}" class="nav__link">{% trans 'Выйти' %} | {{user.username}}</a></li>
+                        {% else %}
+                            <li class="nav__item"><a href="{% url 'login' %}" class="nav__link">{% trans 'Войти' %}</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        {% block main %}
+        {% endblock %}
+        <footer class="footer">
+            <div class="footer__container _container">
+                <a href="#"><img class="footer__logo" src="{% static 'img/logo.svg' %}" alt="logo"></a>
+                <img width="304px" class="star" src="{% static 'img/smile1.png' %}" alt="smiling-star">
+                <div class="footer__menu menu">
+                    <div class="menu__wrapper">
+                        <h3 class="menu__heading">{% trans 'Страницы' %}</h3>
+                        <ul class="menu__list">
+                            <li class="menu__item"><a href="{% url 'about' %}" class="menu__link">{% trans 'О нас' %}</a></li>
+                            <li class="menu__item"><a href="#" class="menu__link">{% trans 'Категории' %}</a></li>
+                            <li class="menu__item"><a href="#" class="menu__link">{% trans 'Блог' %}</a></li>
+                            <li class="menu__item"><a href="#" class="menu__link">{% trans 'Демо' %}</a></li>
+                        </ul>
+                    </div>
+                    <div class="menu__wrapper">
+                        <h3 class="menu__heading">{% trans 'Услуги' %}</h3>
+                        <ul class="menu__list">
+                            <li class="menu__item"><a href="{% url 'events' %}" class="menu__link">{% trans 'Купить билеты' %}</a></li>
+                        </ul>
+                    </div>
+                    <div class="menu__wrapper">
+                        <h3 class="menu__heading">{% trans 'Контакты' %}</h3>
+                        <ul class="menu__list">
+                            <li class="menu__item"><a href="tel:+79503858079" class="menu__link"><img class="menu__icon" src="{% static 'img/icons/phone.svg' %}" alt="phone">(505) 503-4455</a></li>
+                            <li class="menu__item"><a href="mailto:tamirsundureev@gmail.com" class="menu__link"><img class="menu__icon" src="{% static 'img/icons/mail.svg' %}" alt="email">ticketee@gmail.com</a></li>
+                            <li class="menu__item"><a href="#" class="menu__link"><img class="menu__icon" src="{% static 'img/icons/pin.svg' %}" alt="location">{% trans 'Москва' %}</a></li>
+                        </ul>
+                    </div>
+                    <div class="menu__wrapper">
+                        <h3 class="menu__heading">{% trans 'Социалки' %}</h3>
+                        <ul class="menu__list icons-wrapper">
+                            <li class="menu__item"><a href="#" class="menu__link"><img src="{% static 'img/icons/facebook.svg' %}" alt="facebook"></a></li>
+                            <li class="menu__item"><a href="#" class="menu__link"><img src="{% static 'img/icons/twitter.svg' %}" alt="twitter"></a></li>
+                            <li class="menu__item"><a href="#" class="menu__link"><img src="{% static 'img/icons/linked.svg' %}" alt="linkedin"></a></li>
+                            <li class="menu__item"><a href="#" class="menu__link"><img src="{% static 'img/icons/instagram.svg' %}" alt="instagram"></a></li>
+                        </ul>
+                    </div>
+                    <img class="paper-plane" width="217px" src="{% static 'img/paper-plane.png' %}" alt="paper-plane">
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
